@@ -1,0 +1,149 @@
+.container {
+    max-width: 500px;
+    margin: 0 auto;
+    background-color: #f9fafb;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  }
+  
+  .avatarContainer {
+    position: relative;
+    width: fit-content;
+    margin: 0 auto 16px;
+  }
+  
+  .avatar {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #3b82f6;
+  }
+  
+  .editBtn {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    background-color: white;
+    border: 1.5px solid #3b82f6;
+    color: #3b82f6;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  
+  .editBtn:hover {
+    background-color: #eff6ff;
+  }
+  
+  h2 {
+    font-size: 20px;
+    margin-bottom: 16px;
+    color: #1f2937;
+    text-align: center;
+  }
+  
+  .profileInfo {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .username {
+    color: #6b7280;
+    font-size: 14px;
+  }
+  
+  .joined {
+    font-size: 14px;
+    color: #6b7280;
+    margin-top: 5px;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  label {
+    font-size: 14px;
+    color: #374151;
+  }
+  
+  input {
+    padding: 10px 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    background-color: white;
+  }
+  
+  button {
+    padding: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  button:disabled {
+    background-color: #93c5fd;
+    cursor: not-allowed;
+  }
+  
+  button:hover:not(:disabled) {
+    background-color: #2563eb;
+  }
+  
+  .hiddenInput {
+    display: none;
+  }
+  
+  .avatarUpload {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .uploadLabel {
+    background-color: #1e40af;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .spinner {
+    font-size: 13px;
+    margin-top: 10px;
+  }
+  
+  .passwordInput {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .passwordInput input {
+    width: 100%;
+    padding-right: 40px; /* space for icon */
+  }
+  
+  .toggleIcon {
+    position: absolute;
+    right: 12px;
+    cursor: pointer;
+    color: #6b7280;
+    font-size: 18px;
+  }
+  

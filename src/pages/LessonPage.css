@@ -1,0 +1,90 @@
+.lesson-page {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 30px;
+  background: linear-gradient(135deg, #fef6e4, #fff4d8);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #1e293b;
+}
+
+.question {
+  font-size: 1.5rem;
+  margin: 20px 0;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.option-btn {
+  padding: 12px;
+  font-size: 1.1rem;
+  border: 2px solid #60a5fa;
+  border-radius: 10px;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.option-btn:hover {
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+
+.selected {
+  background-color: #bae6fd;
+}
+
+.feedback {
+  margin-top: 20px;
+  font-size: 1.4rem;
+}
+
+.correct {
+  color: #22c55e;
+}
+
+.wrong {
+  color: #ef4444;
+}
+
+.end-message {
+  font-size: 1.6rem;
+  color: #16a34a;
+}
+
+.restart-btn {
+  margin-top: 20px;
+  background-color: #3b82f6;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  transition: background 0.3s ease;
+}
+
+.restart-btn:hover {
+  background-color: #2563eb;
+}
+
+.loading {
+  text-align: center;
+  margin-top: 100px;
+  font-size: 1.3rem;
+  color: #0284c7;
+}

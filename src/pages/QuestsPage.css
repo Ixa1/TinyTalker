@@ -1,0 +1,29 @@
+.quests-page {
+    padding: 2rem;
+    background: #fff0db;
+    font-family: 'Comic Sans MS', cursive;
+  }
+  
+  .quest-card {
+    background: #ffecd2;
+    border: 2px dashed #ff9a9e;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .active-sidebar {
+    background-color: #ff9a9e;
+    color: white;
+    font-weight: bold;
+  }
+  .quests-wrapper, .questContainer {
+    margin-left: 260px; /* Adjust according to sidebar width */
+  }
+  .quest-card.done {
+    background-color: #d3f9d8;
+    border: 2px solid #a0e7e5;
+  }

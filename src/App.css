@@ -1,5 +1,58 @@
 .App {
   text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+h1, h2 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+button {
+  background-color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #fce4ec;
+}
+
+/* Full height for page structure */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main app container that grows */
+#root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure main content area grows to fill space */
+.main-content { 
+   flex: 1;
+}
+
+
+/* .App 
+  text-align: center;
 }
 
 .App-logo {
@@ -35,4 +88,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */

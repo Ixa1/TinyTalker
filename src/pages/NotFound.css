@@ -1,0 +1,22 @@
+.not-found {
+    text-align: center;
+    padding: 3rem;
+    background: #ffe5ec;
+    color: #ff6f91;
+    font-family: 'Comic Sans MS', cursive;
+  }
+  
+  .not-found h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .not-found p {
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .not-found a {
+    color: #f48c06;
+    text-decoration: underline;
+  }
