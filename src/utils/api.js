@@ -1,4 +1,5 @@
 import axios from 'axios';
+import axiosInstance from './axiosConfig';
 
 // Create the API instance
 const API = axios.create({
@@ -15,7 +16,9 @@ API.interceptors.request.use((config) => {
 });
 
 // === 📚 Course APIs ===
-export const getCourses = () => API.get('/courses/');
+export const getCourses = async () => {
+  return await axiosInstance.get('/courses/');
+};
 
 // === 📖 Lesson APIs ===
 export const fetchLessons = (courseId) => API.get(`/courses/${courseId}/lessons/`);
@@ -29,8 +32,13 @@ export const fetchLeaderboard = () => API.get('/leaderboard/');
 
 export const fetchQuestions = () => {
   return API.get('/lessons/questions/');
+  
+
 };
 
+export const updateProgress = async ({ lessonId, xp, completed }) => {
+  return API.post('/progress/update/', { lessonId, xp, completed });
+};
 // === 🎯 Daily Quests APIs (if any) ===
 // (If you have daily quests endpoint, add here like below)
 // export const getQuests = () => API.get('/quests/');

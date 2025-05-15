@@ -34,7 +34,10 @@ class LessonQuestion(models.Model):
 
     def __str__(self):
         return f"Q: {self.question} (Lesson: {self.lesson.title})"
-
+class Report(models.Model):
+    title = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
 # Unit Model (optional if grouping lessons together)
 class Unit(models.Model):
     title = models.CharField(max_length=255)

@@ -6,7 +6,7 @@ import avatar2 from '../Asset/avatars/avatar2.jpg';
 import avatar3 from '../Asset/avatars/avatar3.jpg';
 
 const ProfilePage = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  
   const [selectedAvatar, setSelectedAvatar] = useState(avatar1);
   const [showPicker, setShowPicker] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);

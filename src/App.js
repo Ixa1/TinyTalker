@@ -12,6 +12,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
+import CourseDetailPage from './pages/CourseDetailPage';
+import AdminRoutes from './Admin/routes';
 
 // ✅ New legal pages
 import PrivacyPolicy from './pages/PrivacyPolicy';
@@ -31,6 +33,8 @@ function App() {
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-of-use" element={<TermsOfUse />} />
         <Route path="/cookie-policy" element={<CookiePolicy />} />
+        <Route path="/course/:courseId" element={<CourseDetailPage />} />
+        <Route path="/lesson/:lessonId" element={<LessonPage />} />
 
         {/* Protected Routes */}
         <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
@@ -42,7 +46,9 @@ function App() {
         <Route path="/quests" element={<ProtectedRoute><QuestsPage /></ProtectedRoute>} />
         
         <Route path="/leaderboard" element={<ProtectedRoute><LeaderboardPage /></ProtectedRoute>} />
-
+        {/* Admin Panel App */}
+        <Route path="/admin/*" element={<AdminRoutes />} />
+      
         {/* Fallback */}
         <Route path="*" element={<NotFound />} />
       </Routes>

@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from .models import Unit, UserProgress, UserProfile, LeaderboardEntry, Course, Lesson
+from .models import Unit, UserProgress, UserProfile, LeaderboardEntry, Course, Lesson, UserProgress
 from .serializers import UnitSerializer, UserProgressSerializer, LeaderboardSerializer, CourseSerializer, LessonSerializer, ProfileSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -7,7 +7,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.generics import ListAPIView
 from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from core.models import Lesson, LessonQuestion, Report 
 
 class SignupView(APIView):
     def post(self, request):
@@ -99,3 +104,63 @@ class CourseViewSet(viewsets.ReadOnlyModelViewSet):
 class LessonViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Lesson.objects.all().order_by('order')
     serializer_class = LessonSerializer
+
+class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs):
+        data = super().validate(attrs)
+
+        data['user'] = {
+            'username': self.user.username,
+            'is_admin': self.user.is_staff or self.user.is_superuser
+        }
+
+        return data
+
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
+
+from django.http import JsonResponse
+
+def root_view(request):
+    return JsonResponse({"message": "API running"})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_user_progress(request):
+    user = request.user
+    lesson_id = request.data.get('lessonId')
+    xp = request.data.get('xp', 0)
+    completed = request.data.get('completed', False)
+
+    if not lesson_id:
+        return Response({"error": "lessonId is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        lesson = Lesson.objects.get(id=lesson_id)
+    except Lesson.DoesNotExist:
+        return Response({"error": "Lesson not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    progress, created = UserProgress.objects.get_or_create(user_id=user.id, lesson=lesson)
+    progress.xp = xp
+    progress.completed = completed
+    progress.save()
+
+    return Response({"message": "Progress updated successfully!"})
+
+@api_view(['GET'])
+def admin_summary(request):
+    try:
+        User = get_user_model()
+        users_count = User.objects.count()
+        lessons_count = Lesson.objects.count()
+        questions_count = LessonQuestion.objects.count()
+        reports_count = Report.objects.count()
+
+        return Response({
+            "users": users_count,
+            "lessons": lessons_count,
+            "questions": questions_count,
+            "reports": reports_count
+        })
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

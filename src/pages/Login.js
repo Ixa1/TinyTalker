@@ -41,44 +41,78 @@ function Login() {
             });
 
             console.log('Response:', response.data);
+            const { access, refresh, user } = response.data;
 
             // ✅ If you're returning tokens in the Django view:
-            if (response.data?.access && response.data?.refresh) {
-                // Store tokens for authenticated requests later
-                localStorage.setItem('access_token', response.data.access);
-                localStorage.setItem('refresh_token', response.data.refresh);
-
-                setMessage('Login successful!');
-
-                setTimeout(() => {
-                    navigate('/Dashboard');
-                  }, 1500);
-
-            } else if (response.data?.message === 'Login successful') {
-                // If you're just returning a success message without tokens
-                setMessage('Login successful!');
-
-                setTimeout(() => {
-                    navigate('/Dashboard');
-                }, 500);
-
-            } else {
+            if (access && refresh && user) {
+                localStorage.setItem('access_token', access);
+                localStorage.setItem('refresh_token', refresh);
+          
+                if (user.is_admin) {
+                  localStorage.setItem('adminToken', access);  // ✅ important for admin protection
+                  setMessage('Logged in as admin!');
+                  setTimeout(() => {
+                    navigate('/admin'); // ✅ admin dashboard
+                  }, 1000);
+                } else {
+                  setMessage('Logged in as user');
+                  setTimeout(() => {
+                    navigate('/Dashboard'); // ✅ normal user dashboard
+                  }, 1000);
+                }
+          
+              } else {
                 setMessage('Unexpected response from the server.');
-            }
+              }
 
+            // if (response.data?.access && response.data?.refresh) {
+            //     // Store tokens for authenticated requests later
+            //     localStorage.setItem('access_token', response.data.access);
+            //     localStorage.setItem('refresh_token', response.data.refresh);
+
+            //     setMessage('Login successful!');
+
+            //     setTimeout(() => {
+            //         navigate('/Dashboard');
+            //       }, 1500);
+
+            // } else if (response.data?.message === 'Login successful') {
+            //     // If you're just returning a success message without tokens
+            //     setMessage('Login successful!');
+
+            //     setTimeout(() => {
+            //         navigate('/Dashboard');
+            //     }, 500);
+
+            // } else {
+            //     setMessage('Unexpected response from the server.');
+            // }
         } catch (error) {
             console.error('Login error:', error);
             if (error.response?.data?.error) {
-                setMessage(error.response.data.error);
+              setMessage(error.response.data.error);
             } else if (error.response?.data?.detail) {
-                setMessage(error.response.data.detail);
+              setMessage(error.response.data.detail);
             } else {
-                setMessage('An error occurred. Please try again.');
+              setMessage('An error occurred. Please try again.');
             }
-        } finally {
+          } finally {
             setLoading(false);
-        }
-    };
+          }
+        };
+    //     } catch (error) {
+    //         console.error('Login error:', error);
+    //         if (error.response?.data?.error) {
+    //             setMessage(error.response.data.error);
+    //         } else if (error.response?.data?.detail) {
+    //             setMessage(error.response.data.detail);
+    //         } else {
+    //             setMessage('An error occurred. Please try again.');
+    //         }
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // };
 
     return (
         <div className="login-container">

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import { getCourses, fetchLessons } from '../utils/api';
 import './LearnPage.css';
+import { useCourseStore } from '../store/courseStore';
+
+
 
 const Sidebar = () => {
   const location = useLocation();
@@ -52,27 +55,29 @@ const Navbar = ({ language, setLanguage }) => (
 
 const LearnPage = () => {
   const [courses, setCourses] = useState([]);
-  const [selectedCourse, setSelectedCourse] = useState(null);
+  const selectedCourse = useCourseStore((state) => state.selectedCourse);
+  const setSelectedCourse = useCourseStore((state) => state.setSelectedCourse); // ✅ Fix
   const [lessons, setLessons] = useState([]);
   const [language, setLanguage] = useState('US');
+  //const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchCourses() {
+    const loadCourses = async () => {
       try {
         const response = await getCourses();
         setCourses(response.data);
-      } catch (error) {
-        console.error('Error fetching courses:', error);
+      } catch (err) {
+        console.error('Failed to fetch courses:', err);
       }
-    }
-    fetchCourses();
+    };
+    loadCourses();
   }, []);
 
-  const handleCourseClick = async (courseId) => {
+  const handleCourseClick = async (course) => {
     try {
-      const response = await fetchLessons(courseId);
+      const response = await fetchLessons(course.id);
       setLessons(response.data);
-      setSelectedCourse(courseId);
+      setSelectedCourse(course); // ✅ store the full course object
     } catch (error) {
       console.error('Error fetching lessons:', error);
     }
@@ -88,8 +93,12 @@ const LearnPage = () => {
             <>
               <h1>Choose a Course</h1>
               <div className="courses">
-                {courses.map(course => (
-                  <div key={course.id} className="course-card" onClick={() => handleCourseClick(course.id)}>
+                {courses.map((course) => (
+                  <div
+                    key={course.id}
+                    className="course-card"
+                    onClick={() => handleCourseClick(course)} // ✅ fixed
+                  >
                     <img src={course.icon} alt={course.name} width="80" />
                     <h3>{course.name}</h3>
                     <p>{course.description}</p>
@@ -101,7 +110,7 @@ const LearnPage = () => {
             <>
               <h1>Lessons</h1>
               <div className="lessons">
-                {lessons.map(lesson => (
+                {lessons.map((lesson) => (
                   <div key={lesson.id} className="lesson-card">
                     <h4>{lesson.title}</h4>
                     <p>{lesson.description}</p>
@@ -115,6 +124,6 @@ const LearnPage = () => {
       </div>
     </div>
   );
-};
+}  
 
 export default LearnPage;
