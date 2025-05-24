@@ -3,28 +3,33 @@ import axios from 'axios';
 // Use environment variable or fallback
 const BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api';
 
-
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000, // 10 seconds
+  timeout: 10000,
 });
 
 // Request Interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('adminToken');
+    // 🔄 Check for both tokens
+    const adminToken = localStorage.getItem('adminToken');
+    const userToken = localStorage.getItem('access_token'); // <-- change if using a different key
+
+    const token = adminToken || userToken;
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+
     return config;
   },
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor (for global errors)
+// Response Interceptor
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -34,11 +39,9 @@ axiosInstance.interceptors.response.use(
       if (status === 401 || status === 403) {
         console.warn('Unauthorized or session expired');
         localStorage.removeItem('adminToken');
-        window.location.href = '/login';
+        localStorage.removeItem('access_token'); // optional: logout user too
+        window.location.href = '/login'; // or '/user/login' if you separate
       }
-
-      // Optionally: show toast here using react-toastify
-      // toast.error(error.response.data?.detail || "Something went wrong");
     }
 
     return Promise.reject(error);

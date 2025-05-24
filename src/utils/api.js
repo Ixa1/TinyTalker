@@ -1,12 +1,11 @@
 import axios from 'axios';
 import axiosInstance from './axiosConfig';
 
-// Create the API instance
+// API with token handling
 const API = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/', // Update if your backend URL changes
+  baseURL: 'http://127.0.0.1:8000/api/',
 });
 
-// Attach access token automatically
 API.interceptors.request.use((config) => {
   const token = localStorage.getItem('access_token');
   if (token) {
@@ -16,31 +15,31 @@ API.interceptors.request.use((config) => {
 });
 
 // === 📚 Course APIs ===
-export const getCourses = async () => {
-  return await axiosInstance.get('/courses/');
-};
+export const getCourses = () => axiosInstance.get('/courses/');
 
 // === 📖 Lesson APIs ===
 export const fetchLessons = (courseId) => API.get(`/courses/${courseId}/lessons/`);
-export const getLessonDetail = (lessonId) => API.get(`/lessons/${lessonId}/`);
+export const getLessonDetail = (courseId) => API.get(`/lessons/?course_id=${courseId}`);
 
-// === 👤 Profile APIs ===
+// ✅ Add this: user progress GET
+export const getUserProgress = () => API.get('/progress/');
+
+// ✅ Fixed this: get questions by lesson
+export const fetchQuestions = (lessonId) => API.get(`/questions/?lesson_id=${lessonId}`);
+
+export const submitAnswer = (questionId, answer) => {
+  return axios.post(`/questions/${questionId}/submit/`, { answer });
+};
+
+// ✅ Update progress (XP, completed)
+export const updateProgress = ({ lessonId, xp, completed }) => {
+  return API.post('/user/progress/', { lessonId, xp, completed });
+};
+
+// === 👤 Profile API ===
 export const getProfile = () => API.get('/profile/');
 
-// === 🏆 Leaderboard APIs ===
+// === 🏆 Leaderboard API ===
 export const fetchLeaderboard = () => API.get('/leaderboard/');
-
-export const fetchQuestions = () => {
-  return API.get('/lessons/questions/');
-  
-
-};
-
-export const updateProgress = async ({ lessonId, xp, completed }) => {
-  return API.post('/progress/update/', { lessonId, xp, completed });
-};
-// === 🎯 Daily Quests APIs (if any) ===
-// (If you have daily quests endpoint, add here like below)
-// export const getQuests = () => API.get('/quests/');
 
 export default API;

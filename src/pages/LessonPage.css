@@ -88,3 +88,22 @@
   font-size: 1.3rem;
   color: #0284c7;
 }
+.lesson-card.locked {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.progress-container {
+  height: 8px;
+  background-color: #e5e7eb;
+  border-radius: 10px;
+  margin: 10px 0;
+  width: 100%;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #7fd3a7;
+  border-radius: 10px;
+  transition: width 0.3s ease-in-out;
+}

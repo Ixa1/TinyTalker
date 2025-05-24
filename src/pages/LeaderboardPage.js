@@ -1,36 +1,47 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-//import api from '../utils/api';
-
+import './LeaderboardPage.css';
+import GlobalLayout from '../components/GlobalLayout';
 
 const LeaderboardPage = () => {
   const [leaders, setLeaders] = useState([]);
+  const [error, setError] = useState(null);
+
+  const API_BASE_URL = 'http://localhost:8000/api';
 
   useEffect(() => {
     const fetchLeaderboard = async () => {
-      const res = await axios.get('/progress/');
-      const xpByUser = {};
-      res.data.forEach(p => {
-        xpByUser[p.user] = (xpByUser[p.user] || 0) + p.xp;
-      });
-
-      const ranked = Object.entries(xpByUser)
-        .map(([userId, xp]) => ({ userId, xp }))
-        .sort((a, b) => b.xp - a.xp);
-
-      setLeaders(ranked);
+      try {
+        const res = await axios.get(`${API_BASE_URL}/leaderboard/`);
+        setLeaders(res.data);
+        setError(null);
+      } catch (err) {
+        console.error('Failed to fetch leaderboard:', err);
+        setError('Failed to load leaderboard. Please try again later.');
+      }
     };
     fetchLeaderboard();
   }, []);
 
   return (
-    <div className="leaderboard-page">
-      <h1>Leaderboard</h1>
-      {leaders.map((u, i) => (
-        <p key={u.userId}>#{i + 1} — User {u.userId} - {u.xp} XP</p>
-      ))}
-    </div>
+    <GlobalLayout>
+      <div className="leaderboard-container">
+        <h1 className="leaderboard-title">Leaderboard</h1>
+        {error && <p className="error-text">{error}</p>}
+        {!error && leaders.length === 0 && <p>Loading leaderboard...</p>}
+        <div className="leaderboard-list">
+          {leaders.map((u, i) => (
+            <div key={u.userId} className="leaderboard-item">
+              <span className="leaderboard-rank">#{i + 1}</span>
+              <div className="leaderboard-avatar"></div>
+              <span className="leaderboard-username">{u.username || `User ${u.userId}`}</span>
+              <span className="leaderboard-xp">{(u.xp ?? 0).toLocaleString()} XP</span>
+
+            </div>
+          ))}
+        </div>
+      </div>
+    </GlobalLayout>
   );
 };
 

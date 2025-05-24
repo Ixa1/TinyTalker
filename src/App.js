@@ -34,14 +34,16 @@ function App() {
         <Route path="/terms-of-use" element={<TermsOfUse />} />
         <Route path="/cookie-policy" element={<CookiePolicy />} />
         <Route path="/course/:courseId" element={<CourseDetailPage />} />
-        <Route path="/lesson/:lessonId" element={<LessonPage />} />
+        {/* <Route path="/lesson/:courseId/:lessonId" element={<LessonPage />} /> */}
 
         {/* Protected Routes */}
         <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
         <Route path="/learn" element={<ProtectedRoute><LearnPage /></ProtectedRoute>} />
         <Route path="/unit/:id" element={<ProtectedRoute><UnitPage /></ProtectedRoute>} />
-        <Route path="/course/:id" element={<ProtectedRoute><LessonPage /></ProtectedRoute>} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/course/:courseId" element={<ProtectedRoute><CourseDetailPage /></ProtectedRoute>} />
+        <Route path="/lesson/:courseId/:lessonId" element={<ProtectedRoute><LessonPage /></ProtectedRoute>} />
+
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
         <Route path="/quests" element={<ProtectedRoute><QuestsPage /></ProtectedRoute>} />
         
@@ -57,3 +59,8 @@ function App() {
 }
 
 export default App;
+
+
+
+
+

@@ -1,129 +1,143 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate, Link } from 'react-router-dom';
-import { getCourses, fetchLessons } from '../utils/api';
+import { useEffect, useState } from 'react';
+import axios from '../utils/axiosInstance';
+import { toast } from 'react-toastify';
+import Sidebar from '../components/Sidebar';
 import './LearnPage.css';
-import { useCourseStore } from '../store/courseStore';
-
-
-
-const Sidebar = () => {
-  const location = useLocation();
-  return (
-    <div className="sidebar">
-      <div className="logo-inline">
-        <h2 className="tiny">Tiny</h2>
-        <h2 className="talker">Talker</h2>
-      </div>
-      <nav>
-        <ul>
-          <li className={location.pathname === '/learn' ? 'active-sidebar' : ''}>
-            <Link to="/learn" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <span role="img" aria-label="Learn">🏠</span> Learn
-            </Link>
-          </li>
-          <li className={location.pathname === '/leaderboard' ? 'active-sidebar' : ''}>
-            <Link to="/leaderboard"><span role="img" aria-label="Leaderboard">🏆</span> Leaderboard</Link>
-          </li>
-          <li className={location.pathname === '/quests' ? 'active-sidebar' : ''}>
-            <Link to="/quests"><span role="img" aria-label="Quests">🎯</span> Quests</Link>
-          </li>
-          <li className={location.pathname === '/profile' ? 'active-sidebar' : ''}>
-            <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <span role="img" aria-label="Profile">👤</span> Profile
-            </Link>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  );
-};
-
-const Navbar = ({ language, setLanguage }) => (
-  <div className="navbar">
-    <button className="guidebook">Guidebook</button>
-    <div className="user-info">
-      <span
-        style={{ cursor: 'pointer' }}
-        onClick={() => setLanguage(prev => (prev === 'US' ? 'NP' : 'US'))}
-      >
-        {language}
-      </span>
-      <span>❤️ 5</span>
-    </div>
-  </div>
-);
 
 const LearnPage = () => {
   const [courses, setCourses] = useState([]);
-  const selectedCourse = useCourseStore((state) => state.selectedCourse);
-  const setSelectedCourse = useCourseStore((state) => state.setSelectedCourse); // ✅ Fix
   const [lessons, setLessons] = useState([]);
-  const [language, setLanguage] = useState('US');
-  //const navigate = useNavigate();
+  const [progress, setProgress] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState('');
+  const [totalXp, setTotalXp] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    const loadCourses = async () => {
-      try {
-        const response = await getCourses();
-        setCourses(response.data);
-      } catch (err) {
-        console.error('Failed to fetch courses:', err);
-      }
-    };
-    loadCourses();
+    fetchCourses();
+    fetchXp();
   }, []);
 
-  const handleCourseClick = async (course) => {
+  useEffect(() => {
+    if (selectedCourse) {
+      fetchLessons();
+      fetchProgress();
+    }
+  }, [selectedCourse]);
+
+  const fetchCourses = async () => {
     try {
-      const response = await fetchLessons(course.id);
-      setLessons(response.data);
-      setSelectedCourse(course); // ✅ store the full course object
-    } catch (error) {
-      console.error('Error fetching lessons:', error);
+      const res = await axios.get('/courses/');
+      setCourses(res.data);
+    } catch {
+      toast.error('Failed to load courses');
+    }
+  };
+
+  const fetchLessons = async () => {
+    try {
+      const res = await axios.get(`/lessons/?course_id=${selectedCourse}`);
+      setLessons(res.data);
+    } catch {
+      toast.error('Failed to load lessons');
+    }
+  };
+
+  const fetchProgress = async () => {
+    try {
+      const res = await axios.get('/progress/');
+      setProgress(res.data);
+    } catch {
+      toast.error('Failed to load progress');
+    }
+  };
+
+  const fetchXp = async () => {
+    try {
+      const res = await axios.get('/user/xp-summary/');
+      setTotalXp(res.data.total_xp);
+    } catch {
+      toast.error('Failed to fetch XP');
+    }
+  };
+
+  const isCompleted = (lessonId) =>
+    progress.find((p) => p.lesson === lessonId)?.completed;
+
+  const isUnlocked = (index) =>
+    index === 0 || isCompleted(lessons[index - 1]?.id);
+
+  const handleCompleteLesson = async (lessonId) => {
+    try {
+      await axios.post('/user/progress/', {
+        lessonId,
+        xp: 10,
+        completed: true,
+      });
+      toast.success('🎉 Lesson marked as complete!');
+      fetchProgress();
+      fetchXp();
+    } catch {
+      toast.error('Failed to save progress');
     }
   };
 
   return (
-    <div className="app">
+    <div className="learn-layout">
       <Sidebar />
-      <div className="main-content">
-        <Navbar language={language} setLanguage={setLanguage} />
-        <div className="content">
-          {!selectedCourse ? (
-            <>
-              <h1>Choose a Course</h1>
-              <div className="courses">
-                {courses.map((course) => (
-                  <div
-                    key={course.id}
-                    className="course-card"
-                    onClick={() => handleCourseClick(course)} // ✅ fixed
-                  >
-                    <img src={course.icon} alt={course.name} width="80" />
-                    <h3>{course.name}</h3>
-                    <p>{course.description}</p>
-                  </div>
-                ))}
+
+      <main className="learn-center">
+        <h2 className="course-header">Start Learning</h2>
+
+        <select
+          className="course-dropdown"
+          value={selectedCourse}
+          onChange={(e) => setSelectedCourse(e.target.value)}
+        >
+          <option value="">Select Course</option>
+          {courses.map((course) => (
+            <option key={course.id} value={course.id}>
+              {course.name}
+            </option>
+          ))}
+        </select>
+
+        <div className="lesson-path">
+          {lessons.map((lesson, index) => {
+            const unlocked = isUnlocked(index);
+            const completed = isCompleted(lesson.id);
+            return (
+              <div
+                key={lesson.id}
+                className={`lesson-node ${unlocked ? 'unlocked' : 'locked'} ${completed ? 'completed' : ''}`}
+                onClick={() => unlocked && handleCompleteLesson(lesson.id)}
+              >
+                <div className="lesson-icon">📘</div>
+                <p>{lesson.title}</p>
               </div>
-            </>
-          ) : (
-            <>
-              <h1>Lessons</h1>
-              <div className="lessons">
-                {lessons.map((lesson) => (
-                  <div key={lesson.id} className="lesson-card">
-                    <h4>{lesson.title}</h4>
-                    <p>{lesson.description}</p>
-                    <button className="start-btn">Start Lesson</button>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
+            );
+          })}
         </div>
-      </div>
+      </main>
+
+      <aside className="learn-right">
+        <div className="xp-card">
+          <h4>XP Progress</h4>
+          <div className="xp-bar-track">
+            <div className="xp-bar-fill" style={{ width: `${Math.min(totalXp, 100)}%` }} />
+          </div>
+          <p>{totalXp} XP</p>
+        </div>
+
+        <div className="quest-card">
+          <h4>Daily Quest</h4>
+          <p>Earn 10 XP</p>
+          <div className="quest-bar">
+            <div className="quest-fill" style={{ width: `${Math.min(totalXp, 10) * 10}%` }} />
+          </div>
+        </div>
+      </aside>
     </div>
   );
-}  
+};
 
 export default LearnPage;

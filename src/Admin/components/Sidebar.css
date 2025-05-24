@@ -1,14 +1,13 @@
 .sidebar {
-    width: 240px;
-    background-color: #fff4d8;
-    padding: 2rem 1rem;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-  }
+  width: 220px;
+  min-height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: #fff4d8;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+  z-index: 10;
+}
   
   .logo {
     font-size: 1.6rem;

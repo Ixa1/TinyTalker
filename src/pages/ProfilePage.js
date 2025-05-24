@@ -4,12 +4,12 @@ import styles from './ProfilePage.module.css';
 import avatar1 from '../Asset/avatars/avatar1.jpg';
 import avatar2 from '../Asset/avatars/avatar2.jpg';
 import avatar3 from '../Asset/avatars/avatar3.jpg';
+import './ProfilePage.module.css' 
 
 const ProfilePage = () => {
-  
   const [selectedAvatar, setSelectedAvatar] = useState(avatar1);
   const [showPicker, setShowPicker] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen] = useState(true);
   const navigate = useNavigate();
 
   const user = {
@@ -25,7 +25,6 @@ const ProfilePage = () => {
     progress: [
       { course: 'English', percent: 70 },
       { course: 'Nepali', percent: 45 },
-      
     ],
   };
 
@@ -42,17 +41,11 @@ const ProfilePage = () => {
   return (
     <div className={`${styles.page} ${sidebarOpen ? '' : styles.collapsed}`}>
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : styles.closed}`}>
-        <div className={styles.toggleWrapper}>
-          {/* <button
-            className={styles.toggleButton}
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            ☰
-          </button> */}
-        </div>
+        <div className={styles.toggleWrapper}></div>
+
         <h2 className={styles.logo}>✨ Tiny Talker</h2>
         <nav className={styles.nav}>
-          <button onClick={() => navigate('/learn')}>📘 Learn</button>
+          <button onClick={() => navigate('/dashboard')}>📘 Learn</button>
           <button onClick={() => navigate('/leaderboard')}>🏆 Leaderboard</button>
           <button onClick={() => navigate('/quests')}>🧩 Quests</button>
           <button className={styles.active}>👩‍🎓 Profile</button>
@@ -62,10 +55,6 @@ const ProfilePage = () => {
           <button className={styles.logout} onClick={handleLogout}>🔒 Logout</button>
         </div>
       </aside>
-
-      {/* <button className={styles.toggleBtn} onClick={() => setSidebarOpen(!isSidebarOpen)}>
-        {isSidebarOpen ? '◀' : '▶'}
-      </button> */}
 
       <main className={styles.main}>
         <div className={styles.profileCard}>
@@ -109,11 +98,6 @@ const ProfilePage = () => {
               <h3>{user.stats.xp}</h3>
               <p>Total XP</p>
             </div>
-            {/* <div className={styles.statCard}>
-              <span>💎</span>
-              <h3>{user.stats.league}</h3>
-              <p>League</p>
-            </div> */}
             <div className={styles.statCard}>
               <span>🥇</span>
               <h3>{user.stats.topFinishes}</h3>

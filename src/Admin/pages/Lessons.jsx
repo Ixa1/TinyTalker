@@ -1,69 +1,152 @@
 import { useEffect, useState } from 'react';
 import axios from '../../utils/axiosInstance';
 import { toast } from 'react-toastify';
+import './Lessons.css';
 
 const Lessons = () => {
   const [lessons, setLessons] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [title, setTitle] = useState('');
+  const [courseId, setCourseId] = useState('');
+  const [editingId, setEditingId] = useState(null);
+  const [editingTitle, setEditingTitle] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Fetch lessons on load
   useEffect(() => {
     fetchLessons();
+    fetchCourses();
   }, []);
 
   const fetchLessons = async () => {
     try {
       const res = await axios.get('/lessons/');
       setLessons(res.data);
-    } catch (err) {
+    } catch {
       toast.error('Failed to load lessons');
     }
   };
 
+  const fetchCourses = async () => {
+    try {
+      const res = await axios.get('/courses/');
+      setCourses(res.data);
+    } catch {
+      toast.error('Failed to load courses');
+    }
+  };
+
   const addLesson = async () => {
-    if (!title.trim()) {
-      toast.warn('Lesson title cannot be empty');
+    if (!title.trim() || !courseId) {
+      toast.warn('Please fill all fields');
       return;
     }
 
     try {
       setLoading(true);
-      await axios.post('/lessons/', { title });
+      await axios.post('/lessons/', {
+        title,
+        course: courseId,
+        description: '',
+        xp: 0,
+        section: '',
+        order: 1,
+        
+      });
       toast.success('Lesson added');
       setTitle('');
-      fetchLessons(); // reload only the list
-    } catch (err) {
+      setCourseId('');
+      fetchLessons();
+    } catch {
       toast.error('Failed to add lesson');
     } finally {
       setLoading(false);
     }
   };
 
-  return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Lessons</h2>
+  const deleteLesson = async (id) => {
+    try {
+      await axios.delete(`/lessons/${id}/`);
+      toast.success('Lesson deleted');
+      fetchLessons();
+    } catch {
+      toast.error('Failed to delete lesson');
+    }
+  };
 
-      <div className="mb-4">
+  const startEdit = (lesson) => {
+    setEditingId(lesson.id);
+    setEditingTitle(lesson.title);
+  };
+
+  const cancelEdit = () => {
+    setEditingId(null);
+    setEditingTitle('');
+  };
+
+  const saveEdit = async (id) => {
+    try {
+      await axios.put(`/lessons/${id}/`, { title: editingTitle });
+      toast.success('Lesson updated');
+      setEditingId(null);
+      fetchLessons();
+    } catch {
+      toast.error('Failed to update lesson');
+    }
+  };
+
+  return (
+    <div className="lesson-container">
+      <h2 className="lesson-header">Lessons</h2>
+
+      <div className="lesson-input-group">
         <input
           type="text"
           placeholder="Lesson Title"
           value={title}
-          onChange={e => setTitle(e.target.value)}
-          className="border p-2 mr-2"
+          onChange={(e) => setTitle(e.target.value)}
+          className="lesson-input"
         />
+        <select
+          value={courseId}
+          onChange={(e) => setCourseId(e.target.value)}
+          className="lesson-input"
+        >
+          <option value="">Select Course</option>
+          {courses.map((course) => (
+            <option key={course.id} value={course.id}>{course.name}</option>
+          ))}
+        </select>
         <button
           onClick={addLesson}
           disabled={loading}
-          className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+          className="lesson-button"
         >
           {loading ? 'Adding...' : 'Add Lesson'}
         </button>
       </div>
 
-      <ul className="mt-4 bg-white p-4 rounded shadow">
+      <ul className="lesson-list">
         {lessons.map((lesson) => (
-          <li key={lesson.id} className="border-b py-2">{lesson.title}</li>
+          <li key={lesson.id} className="lesson-item">
+            {editingId === lesson.id ? (
+              <>
+                <input
+                  type="text"
+                  value={editingTitle}
+                  onChange={(e) => setEditingTitle(e.target.value)}
+                  className="lesson-edit-input"
+                />
+                <button onClick={() => saveEdit(lesson.id)} className="lesson-save-button">💾</button>
+                <button onClick={cancelEdit} className="lesson-cancel-button">❌</button>
+              </>
+            ) : (
+              <>
+                <span>{lesson.title}</span>
+                <button onClick={() => startEdit(lesson)} className="lesson-edit-button">✏️</button>
+                <button onClick={() => deleteLesson(lesson.id)} className="lesson-delete-button">🗑️</button>
+              </>
+            )}
+          </li>
         ))}
       </ul>
     </div>

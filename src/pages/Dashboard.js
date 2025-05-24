@@ -3,21 +3,21 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 
 const languages = [
-  { name: 'English', flag: 'https://flagcdn.com/gb.svg', route: '/learn' },
-  { name: 'Nepali', flag: 'https://flagcdn.com/np.svg', route: '/learn' }, // you can change if needed
+  { name: 'English', flag: 'https://flagcdn.com/gb.svg', courseId: 1 },
+  { name: 'Nepali', flag: 'https://flagcdn.com/np.svg', courseId: 2 }, // you can change if needed
 ];
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const location = useLocation(); // 👈 to check current path
 
-  const isActive = (path) => location.pathname === path;
+  // const isActive = (path) => location.pathname === path;
 
   return (
     <div className="dashboard">
       <aside className="sidebar">
         <div className="logo-inline">
-          <h2 className="tiny">Tiny</h2>
+          <h2 className="✨tiny">Tiny</h2>
           <h2 className="talker">Talker</h2>
         </div>
 
@@ -51,7 +51,7 @@ export default function Dashboard() {
             <div
               key={lang.name}
               className="language-card"
-              onClick={() => navigate(lang.route)}
+              onClick={() => navigate(`/course/${lang.courseId}`)} // 🔥 jump directly to first lesson
               style={{ cursor: 'pointer' }}
             >
               <img src={lang.flag} alt={`${lang.name} flag`} className="flag" />

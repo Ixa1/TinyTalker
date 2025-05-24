@@ -1,18 +1,92 @@
-.leaderboard-page {
-    background: #f0f9ff;
-    padding: 2rem;
-    font-family: 'Comic Sans MS', cursive;
-  }
-  
-  .leaderboard-page h1 {
-    text-align: center;
-    color: #0077b6;
-  }
-  
-  .leaderboard-page p {
-    font-size: 1.2rem;
-    padding: 0.5rem;
-    border-radius: 8px;
-    background: #caf0f8;
-    margin-bottom: 0.5rem;
-  }
+.leaderboard-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  background-color: #2f3e5c;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  color: #ffffff;
+  padding: 2rem 1rem 1rem;
+  position: relative;
+}
+
+.leaderboard-title {
+  background-color: #ffc107;
+  color: #333;
+  padding: 12px 20px;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 6px;
+  display: inline-block;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.leaderboard-title::before,
+.leaderboard-title::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+}
+
+.leaderboard-title::before {
+  left: -20px;
+  border-right: 20px solid #ffc107;
+}
+
+.leaderboard-title::after {
+  right: -20px;
+  border-left: 20px solid #ffc107;
+}
+
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.leaderboard-item {
+  display: flex;
+  align-items: center;
+  background-color: #f9fafb;
+  border-radius: 50px;
+  padding: 14px 24px;
+  gap: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  color: #1f2937;
+  justify-content: flex-start;
+}
+
+.leaderboard-rank {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #1f2937;
+  min-width: 40px;
+  text-align: center;
+}
+
+.leaderboard-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #ccc;
+}
+
+.leaderboard-username {
+  flex-grow: 1;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-left: 8px;
+}
+
+.leaderboard-xp {
+  font-weight: bold;
+  color: #2e7d32;
+  font-size: 1rem;
+  margin-left: auto;
+}

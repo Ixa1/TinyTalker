@@ -7,76 +7,65 @@
     overflow: hidden; 
     font-family: 'Segoe UI', sans-serif;
   }
-  .logo-inline {
-    text-align: center;
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-  }
-  
-  .logo-inline .tiny {
-    color: #3aa9bd;  /* soft teal */
-  }
-  
-  .logo-inline .talker {
-    color: #56c2d6;  /* pastel blue */
-  }
-  
-  
-  .logo-inline span {
-    background: linear-gradient(to right, #3aa9bd, #56c2d6);
-    /* -webkit-background-clip: text; */
-    -webkit-text-fill-color: transparent;
-  }
-  
-  body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    /* overflow-x: hidden; /* prevents horizontal scroll only */
-  /* overflow-y: auto;  */
-  } 
-  
-  /* ===== Sidebar ===== */
-  .sidebar {
-    width: 220px;
-    background-color: #ffffff;
-    border-right: 1px solid #e2e8f0;
-    padding: 30px 20px;
-    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
-  }
-  
-  .logo {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #16a34a;
-    text-align: center;
-    margin-bottom: 40px;
-  }
-  
-  .sidebar nav ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .sidebar nav li {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1rem;
-    color: #374151;
-    padding: 10px 0;
-    cursor: pointer;
-    transition: color 0.3s ease;
-  }
-  
-  .sidebar nav li:hover {
-    color: #2563eb;
-  }
+/* ===== Sidebar ===== */
+.sidebar {
+  width: 220px;
+  background-color: #fff4d8; /* 🍋 Soft yellow background */
+  border-right: 1px solid #e2e8f0;
+  padding: 30px 20px;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.logo-inline {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #f97316; /* Orange */
+}
+
+.logo-inline .tiny {
+  color: #f97316;
+}
+
+.logo-inline .talker {
+  color: #f97316;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.sidebar nav li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  padding: 12px 16px;
+  color: #1f2937;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar nav li:hover {
+  background-color: #fde68a;
+  color: #1f2937;
+}
+
+.active-sidebar {
+  background-color: #ffc107;
+  color: #000000 !important;
+  font-weight: bold;
+}
+
   
   /* ===== Main Content ===== */
   .main-content {

@@ -49,18 +49,20 @@ function Signup() {
               });
               
 
-              console.log(response.data);
+                console.log(response.data);
 
-              if (response.data.message === "User created successfully") {
-                setMessage('Signup successful! Redirecting to login...');
+                const msg = response?.data?.message || '';
+
+                if (msg.toLowerCase().includes("user created")) {
+                setMessage('✅ Please check your email to verify your account.');
                 setFormData({ username: '', email: '', password: '', confirmPassword: '' });
-            
+
                 setTimeout(() => {
-                  navigate('/login');
+                    navigate('/login');
                 }, 2000);
-              } else {
+                } else {
                 setMessage('Signup failed. Please try again.');
-              }
+                }
 
             } catch (error) {
                 console.error("Signup error:", error.response?.data);

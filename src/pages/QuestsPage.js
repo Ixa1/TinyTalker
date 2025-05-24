@@ -1,72 +1,72 @@
-import React from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import GlobalLayout from '../components/GlobalLayout';
 import styles from './DailyQuests.module.css';
-//import './Sidebar.css'; // optional if Sidebar styles are shared
-
-const Sidebar = () => {
-  const location = useLocation();
-
-  return (
-    <div className="sidebar">
-      <div className="logo-inline">
-        <h2 className="tiny">Tiny</h2>
-        <h2 className="talker">Talker</h2>
-      </div>
-      <nav>
-        <ul>
-          <li className={location.pathname === '/learn' ? 'active-sidebar' : ''}>
-            <Link to="/learn" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <span role="img" aria-label="Learn">🏠</span> Learn
-            </Link>
-          </li>
-          <li className={location.pathname === '/leaderboard' ? 'active-sidebar' : ''}>
-            <Link to="/leaderboard"><span role="img" aria-label="Leaderboard">🏆</span> Leaderboard</Link>
-          </li>
-          <li className={location.pathname === '/quests' ? 'active-sidebar' : ''}>
-            <Link to="/quests"><span role="img" aria-label="Quests">🎯</span> Quests</Link>
-          </li>
-          <li className={location.pathname === '/profile' ? 'active-sidebar' : ''}>
-            <Link to="/profile"><span role="img" aria-label="Profile">👤</span> Profile</Link>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  );
-};
 
 const QuestsPage = () => {
-  const quests = [
-    { id: 1, icon: '⚡', title: 'Earn 20 XP', progress: 0, total: 20 },
-    { id: 2, icon: '🤖', title: 'Get 5 in a row correct in 2 lessons', progress: 0, total: 2 },
-    { id: 3, icon: '⏱️', title: 'Score 80% or higher in 5 lessons', progress: 0, total: 5 },
-  ];
+  const [quests, setQuests] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchQuests = async () => {
+      try {
+        const token = localStorage.getItem('access_token');
+        // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ4MDcwNzM2LCJpYXQiOjE3NDc5ODQzMzYsImp0aSI6IjJkZTRmZGEzYmQyYzRhZDVhYzVmNjk2NmRhZDE0MjgyIiwidXNlcl9pZCI6N30.-MSoCunGx8rIpYLzJ7f1HVVfA22Mw0VhFddBnDDcEGE';
+
+        const res = await axios.get('http://localhost:8000/api/quests/', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        // localStorage.getItem('access_token') ||
+        // 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzQ4MDcwNzM2LCJpYXQiOjE3NDc5ODQzMzYsImp0aSI6IjJkZTRmZGEzYmQyYzRhZDVhYzVmNjk2NmRhZDE0MjgyIiwidXNlcl9pZCI6N30.-MSoCunGx8rIpYLzJ7f1HVVfA22Mw0VhFddBnDDcEGE.'; /
+        // const res = await axios.get('http://localhost:8000/api/quests/', {
+        //   headers: {
+        //     Authorization: `Bearer ${token}`,
+        //   },
+        // });
+        setQuests(res.data);
+      } catch (err) {
+        console.error('Failed to fetch quests:', err);
+        setError('Could not load daily quests.');
+      }
+    };
+    fetchQuests();
+  }, []);
 
   return (
-    <div className="app">
-      <Sidebar />
+    <GlobalLayout>
       <div className={styles.questContainer}>
         <h2 className={styles.title}>Daily Quests</h2>
-
+        {error && <p className={styles.error}>{error}</p>}
         <div className={styles.questList}>
           {quests.map((quest) => (
             <div key={quest.id} className={styles.questCard}>
               <div className={styles.questHeader}>
-                <span className={styles.icon}>{quest.icon}</span>
+                <span className={styles.icon}>
+                  {quest.quest_type === 'xp' && '⚡'}
+                  {quest.quest_type === 'streak' && '🤖'}
+                  {quest.quest_type === 'accuracy' && '⏱️'}
+                </span>
+
                 <span className={styles.questTitle}>{quest.title}</span>
               </div>
               <progress
                 className={styles.progressBar}
                 value={quest.progress}
-                max={quest.total}
+                max={quest.target}
               />
               <div className={styles.questProgressText}>
-                {quest.progress} / {quest.total}
+                {quest.progress} / {quest.target}
               </div>
+              {quest.completed && (
+                <div className={styles.completedBadge}>✅ Completed</div>
+              )}
             </div>
           ))}
         </div>
       </div>
-    </div>
+    </GlobalLayout>
   );
 };
 

@@ -1,0 +1,91 @@
+/* Page container */
+.course-detail {
+  padding: 40px;
+  background-color: #e3eff4;
+  min-height: 100vh;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Section title */
+.course-detail h2 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #1e3a8a;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* Flex container for the three levels */
+.level-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Each lesson card */
+.lesson-card {
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #fff4d8;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  text-align: center;
+  border: 2px solid transparent;
+  transition: transform 0.2s, border-color 0.2s;
+}
+
+.lesson-card:hover {
+  transform: translateY(-3px);
+  border-color: #3b82f6;
+}
+
+/* Locked style */
+.lesson-card.locked {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: #d1d5db;
+}
+
+/* Completed style */
+.lesson-card.completed {
+  background-color: #d1fae5;
+  border-color: #10b981;
+}
+
+.lesson-card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #1f2937;
+}
+
+.lesson-card p {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+@media screen and (max-width: 600px) {
+  .course-detail {
+    padding: 20px;
+  }
+
+  .level-container {
+    width: 100%;
+  }
+
+  .lesson-card {
+    padding: 16px;
+  }
+
+  .lesson-card h3 {
+    font-size: 18px;
+  }
+
+  .lesson-card p {
+    font-size: 13px;
+  }
+}

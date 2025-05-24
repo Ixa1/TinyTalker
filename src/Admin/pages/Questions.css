@@ -1,0 +1,110 @@
+/* Page container */
+.p-6 {
+  padding: 1.5rem;
+  background-color: #f9fafb;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Section titles */
+.text-2xl {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1e3a8a;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e40af;
+}
+
+/* Spacing utilities */
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+/* Select box styles */
+select {
+  border: 1px solid #cbd5e1;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #fff;
+}
+
+/* Add button */
+button.bg-blue-600 {
+  background-color: #2563eb;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+button.bg-blue-600:hover {
+  background-color: #1d4ed8;
+}
+
+/* Table */
+table {
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #e2e8f0;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+th, td {
+  padding: 0.75rem;
+  text-align: left;
+}
+
+tr.border-t {
+  border-top: 1px solid #e5e7eb;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Action buttons */
+button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+button:focus {
+  outline: none;
+}

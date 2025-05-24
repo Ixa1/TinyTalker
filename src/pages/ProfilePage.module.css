@@ -1,150 +1,93 @@
+/* ========== Base Layout ========== */
 .page {
   display: flex;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #fef6e4;
-}
-body {
-  width: 100vw;
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
   background-color: #e3eff4;
-}
-.page, .app, .main-content {
-  width: 100vw;
-  max-width: 100vw;
-  margin: 0;
-  padding: 0;
-  display: flex;             /* Remove or reduce side padding */
-}
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.dark {
-  background-color: #7b9fda;
-  color: white;
-}
-
-.dark .sidebar {
-  background-color: #0f172a;
+  overflow: hidden;
 }
 
 .sidebar {
   width: 250px;
   background-color: #fff4d8;
+  padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 2rem 1rem;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  border-right: 1px solid #fcd34d;
 }
 
 .logo {
-  font-size: 1.7rem;
+  font-size: 1.6rem;
   font-weight: bold;
   text-align: center;
   color: #f97316;
+  margin-bottom: 2rem;
 }
 
 .nav button {
-  background: #fff;
+  background: #ffffff;
   border: none;
-  margin: 0.5rem 0;
-  padding: 0.7rem 1rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
   border-radius: 12px;
   font-size: 1rem;
-  color: #333;
+  color: #1f2937;
   cursor: pointer;
   width: 100%;
   text-align: left;
+  transition: all 0.3s ease;
 }
 
 .nav .active,
 .nav button:hover {
   background-color: #fde68a;
-  color: #ea580c;
+  color: #b45309;
   font-weight: bold;
 }
 
 .controls {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.toggleLabel {
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-}
-
-input[type="checkbox"] {
-  display: none;
-}
-
-.slider {
-  position: relative;
-  width: 50px;
-  height: 26px;
-  background-color: #ccc;
-  border-radius: 26px;
-  display: inline-block;
-  cursor: pointer;
-}
-
-input[type="checkbox"]:checked + .slider {
-  background-color: #4ade80;
-}
-
-.slider::before {
-  content: '';
-  position: absolute;
-  height: 22px;
-  width: 22px;
-  background-color: white;
-  border-radius: 50%;
-  top: 2px;
-  left: 2px;
-  transition: transform 0.3s ease;
-}
-
-input[type="checkbox"]:checked + .slider::before {
-  transform: translateX(24px);
+  margin-top: auto;
 }
 
 .logout {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   background-color: #ef4444;
-  color: #fff;
+  color: white;
   border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
   cursor: pointer;
   width: 100%;
   font-weight: bold;
 }
 
 .main {
+  margin-left: 250px;
+  padding: 2.5rem;
   flex: 1;
-  padding: 2rem 4rem;
   overflow-y: auto;
 }
 
+/* ========== Profile Card ========== */
 .profileCard {
-  background-color: #fff;
+  background-color: #ffffff;
   border-radius: 20px;
   padding: 2rem;
-  max-width: 800px;
-  margin: 0 auto 2rem;
   text-align: center;
-  position: relative;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2.5rem;
 }
 
 .avatarSection {
   position: relative;
-  width: 110px;
-  height: 110px;
+  width: 120px;
+  height: 120px;
   margin: 0 auto 1.5rem;
 }
 
@@ -153,7 +96,8 @@ input[type="checkbox"]:checked + .slider::before {
   height: 100%;
   border-radius: 9999px;
   border: 4px solid white;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
 }
 
 .avatarEditBtn {
@@ -163,35 +107,30 @@ input[type="checkbox"]:checked + .slider::before {
   background-color: #fcd34d;
   border-radius: 50%;
   border: none;
-  font-size: 1rem;
+  font-size: 0.9rem;
   padding: 0.4rem;
   cursor: pointer;
 }
 
 .avatarPicker {
   position: absolute;
-  top: 120%;
+  top: 125%;
   left: 50%;
   transform: translateX(-50%);
   background-color: #ffffff;
-  border: 2px solid #e5e7eb;
+  border: 2px solid #fcd34d;
   border-radius: 12px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
   padding: 0.5rem;
   display: flex;
   gap: 0.5rem;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   z-index: 10;
-}
-
-.dark .avatarPicker {
-  background-color: #1e293b;
-  border-color: #334155;
 }
 
 .avatarOption {
   width: 50px;
   height: 50px;
-  border-radius: 50%;
+  border-radius: 9999px;
   cursor: pointer;
   border: 2px solid transparent;
 }
@@ -202,60 +141,58 @@ input[type="checkbox"]:checked + .slider::before {
 
 .name {
   font-size: 1.5rem;
-  margin: 0.5rem 0;
+  font-weight: 600;
   color: #1f2937;
 }
 
-.username {
-  font-size: 0.95rem;
-  color: #666;
-}
-
+.username,
 .joined {
-  font-size: 0.85rem;
-  color: #888;
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-top: 4px;
 }
 
+/* ========== Sections ========== */
 .section {
-  max-width: 800px;
-  margin: 0 auto 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .sectionTitle {
-  font-size: 1.3rem;
-  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
   color: #f97316;
   text-align: center;
+  margin-bottom: 1.5rem;
 }
 
 .statsGrid {
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+  gap: 1.5rem;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .statCard {
-  background: #fff7ed;
+  background-color: #fff7ed;
   padding: 1rem;
   border-radius: 16px;
-  width: 140px;
+  width: 150px;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .statCard span {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
 }
 
 .statCard h3 {
-  font-size: 1.2rem;
-  margin: 0.5rem 0;
-  color: #1f2937;
+  font-size: 1.25rem;
+  color: #111827;
+  margin: 0.5rem 0 0.25rem;
 }
 
 .statCard p {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: #4b5563;
 }
 
@@ -265,16 +202,14 @@ input[type="checkbox"]:checked + .slider::before {
   gap: 1rem;
 }
 
-.progressItem {
-  width: 100%;
-}
-
 .courseTitle {
   font-weight: 500;
   margin-bottom: 0.4rem;
+  color: #1f2937;
 }
 
 .progressBar {
+  width: 100%;
   height: 16px;
   background-color: #e5e7eb;
   border-radius: 9999px;
@@ -286,134 +221,8 @@ input[type="checkbox"]:checked + .slider::before {
   background: linear-gradient(to right, #34d399, #10b981);
   color: white;
   font-size: 0.75rem;
-  padding-right: 0.4rem;
+  padding-right: 0.5rem;
   text-align: right;
   border-radius: 9999px;
-  transition: width 0.5s ease;
-}
-
-/* ✅ Fix text visibility in dark mode */
-.dark .name,
-.dark .username,
-.dark .joined,
-.dark .statCard h3,
-.dark .statCard p {
-  color: white;
-}
-
-.dark .statCard {
-  background-color: #1e3a8a;
-  border: 1px solid #3b82f6;
-}
-.dark .profileCard {
-  background-color: #1e3a8a; /* deep blue background */
-  color: white;
-  border: 1px solid #3b82f6;
-}
-
-.dark .profileCard h1,
-.dark .profileCard p {
-  color: white;
-}
-.page {
-  display: flex;
-  width: 100%;
-  height: 100vh;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #fef6e4;
-  transition: all 0.3s ease;
-}
-
-.sidebar {
-  position: relative;
-  width: 250px;
-  background-color: #fff4d8;
-  transition: transform 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 2rem 1rem;
-  z-index: 10;
-}
-
-.open {
-  transform: translateX(0%);
-}
-
-.closed {
-  transform: translateX(-100%);
-}
-
-.toggleWrapper {
-  position: absolute;
-  top: 1rem;
-  right: -40px;
-  background-color: #fde68a;
-  border-radius: 0 6px 6px 0;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
-}
-
-.toggleButton {
-  border: none;
-  background: none;
-  font-size: 1.5rem;
-  padding: 0.5rem 0.75rem;
-  cursor: pointer;
-}
-
-.logo {
-  font-size: 1.7rem;
-  font-weight: bold;
-  text-align: center;
-  color: #f97316;
-}
-
-.nav {
-  margin-top: 4rem;
-}
-
-.nav button {
-  background: #fff;
-  border: none;
-  margin: 0.5rem 0;
-  padding: 0.7rem 1rem;
-  border-radius: 12px;
-  font-size: 1rem;
-  color: #333;
-  cursor: pointer;
-  width: 100%;
-  text-align: left;
-}
-
-.nav .active,
-.nav button:hover {
-  background-color: #fde68a;
-  color: #ea580c;
-  font-weight: bold;
-}
-
-.controls {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  
-}
-
-.logout {
-  margin-top: 1rem;
-  background-color: #ef4444;
-  color: white;
-  border: none;
-  padding: 0.6rem 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  width: 100%;
-  font-weight: bold;
-}
-
-.main {
-  flex: 1;
-  padding: 2rem;
-  overflow-y: auto;
+  transition: width 0.4s ease;
 }
